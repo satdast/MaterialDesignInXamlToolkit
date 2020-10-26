@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace MaterialDesignThemes.Wpf
 {
     internal static class TreeHelper
     {
-        public static double GetVisibleWidth(FrameworkElement element, UIElement parent)
+        public static double GetVisibleWidth(FrameworkElement element, FrameworkElement parent, FlowDirection flowDirection)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
             if (parent == null) throw new ArgumentNullException(nameof(parent));
 
             var location = element.TransformToAncestor(parent).Transform(new Point(0, 0));
+            if (flowDirection != parent.FlowDirection)
+                location.X -= element.ActualWidth;
 
-            int width = (int) Math.Floor(element.ActualWidth);
+            int width = (int)Math.Floor(element.ActualWidth);
             var hitTest = parent.InputHitTest(new Point(location.X + width, location.Y));
 
             if (IsAncestorTill(hitTest as FrameworkElement, element, parent))
@@ -28,12 +24,12 @@ namespace MaterialDesignThemes.Wpf
             }
 
             //BinarySearch here
-            int end = (int) Math.Floor(element.ActualWidth);
+            int end = (int)Math.Floor(element.ActualWidth);
             int start = 0;
 
             while (start < end)
             {
-                width = (end + start)/2;
+                width = (end + start) / 2;
                 hitTest = parent.InputHitTest(new Point(location.X + width, location.Y));
 
                 if (IsAncestorTill(hitTest as FrameworkElement, element, parent))

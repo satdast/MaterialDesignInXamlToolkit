@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using MaterialDesignDemo.Domain;
 
 namespace MaterialDesignColors.WpfExample.Domain
 {
-    public class TextFieldsViewModel : INotifyPropertyChanged
+    public class FieldsViewModel : INotifyPropertyChanged
     {
         private string _name;
+        private string _name2;
         private int? _selectedValueOne;
         private string _selectedTextTwo;
 
-        public TextFieldsViewModel()
+        public FieldsViewModel()
         {
             LongListToTestComboVirtualization = new List<int>(Enumerable.Range(0, 1000));
 
@@ -33,6 +30,15 @@ namespace MaterialDesignColors.WpfExample.Domain
             }
         }
 
+        public string Name2
+        {
+            get { return _name2; }
+            set
+            {
+                this.MutateVerbose(ref _name2, value, RaisePropertyChanged());
+            }
+        }
+
         public int? SelectedValueOne
         {
             get { return _selectedValueOne; }
@@ -40,7 +46,7 @@ namespace MaterialDesignColors.WpfExample.Domain
             {
                 this.MutateVerbose(ref _selectedValueOne, value, RaisePropertyChanged());
             }
-        }        
+        }
 
         public string SelectedTextTwo
         {

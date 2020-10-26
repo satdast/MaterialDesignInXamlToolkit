@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf.Converters;
@@ -16,17 +12,11 @@ namespace MaterialDesignThemes.Wpf
     /// <para/>
     /// To set a target control you should set the HintProxy property. Use the <see cref="HintProxyFabricConverter.Instance"/> converter which converts a control into the IHintProxy interface.
     /// </summary>
-    [TemplateVisualState(GroupName = ContentStatesGroupName, Name = ContentEmptyName)]
-    [TemplateVisualState(GroupName = ContentStatesGroupName, Name = ContentNotEmptyName)]
     [TemplateVisualState(GroupName = ContentStatesGroupName, Name = HintRestingPositionName)]
     [TemplateVisualState(GroupName = ContentStatesGroupName, Name = HintFloatingPositionName)]
     public class SmartHint : Control
-    {        
+    {
         public const string ContentStatesGroupName = "ContentStates";
-        [System.Obsolete]
-        public const string ContentEmptyName = "ContentEmpty";
-        [System.Obsolete]
-        public const string ContentNotEmptyName = "ContentNotEmpty";
 
         public const string HintRestingPositionName = "HintRestingPosition";
         public const string HintFloatingPositionName = "HintFloatingPosition";
@@ -69,7 +59,7 @@ namespace MaterialDesignThemes.Wpf
 
         public bool IsContentNullOrEmpty
         {
-            get { return (bool) GetValue(IsContentNullOrEmptyProperty); }
+            get { return (bool)GetValue(IsContentNullOrEmptyProperty); }
             private set { SetValue(IsContentNullOrEmptyPropertyKey, value); }
         }
 
@@ -100,7 +90,7 @@ namespace MaterialDesignThemes.Wpf
 
         public bool UseFloating
         {
-            get { return (bool) GetValue(UseFloatingProperty); }
+            get { return (bool)GetValue(UseFloatingProperty); }
             set { SetValue(UseFloatingProperty, value); }
         }
 
@@ -124,7 +114,7 @@ namespace MaterialDesignThemes.Wpf
         {
             get { return (Point)GetValue(FloatingOffsetProperty); }
             set { SetValue(FloatingOffsetProperty, value); }
-        }        
+        }
 
         #endregion
 
@@ -135,7 +125,7 @@ namespace MaterialDesignThemes.Wpf
 
         public double HintOpacity
         {
-            get { return (double) GetValue(HintOpacityProperty); }
+            get { return (double)GetValue(HintOpacityProperty); }
             set { SetValue(HintOpacityProperty, value); }
         }
 
@@ -146,21 +136,12 @@ namespace MaterialDesignThemes.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SmartHint), new FrameworkPropertyMetadata(typeof(SmartHint)));
         }
 
-        public SmartHint()
-        {
-            IsHitTestVisible = false;
-            HorizontalAlignment = HorizontalAlignment.Left;
-            VerticalAlignment = VerticalAlignment.Top;
-        }
-
         private static void HintProxyPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var smartHint = dependencyObject as SmartHint;
             if (smartHint == null) return;
 
-            var hintProxy = dependencyPropertyChangedEventArgs.OldValue as IHintProxy;
-
-            if (hintProxy != null)
+            if (dependencyPropertyChangedEventArgs.OldValue is IHintProxy hintProxy)
             {
                 hintProxy.IsVisibleChanged -= smartHint.OnHintProxyIsVisibleChanged;
                 hintProxy.ContentChanged -= smartHint.OnHintProxyContentChanged;
@@ -193,7 +174,7 @@ namespace MaterialDesignThemes.Wpf
 
             if (HintProxy.IsLoaded)
                 RefreshState(true);
-            else            
+            else
                 HintProxy.Loaded += HintProxySetStateOnLoaded;
         }
 
@@ -214,7 +195,7 @@ namespace MaterialDesignThemes.Wpf
 
             if (proxy == null) return;
             if (!proxy.IsVisible) return;
-            
+
             var action = new Action(() =>
             {
                 string state = string.Empty;
@@ -240,6 +221,6 @@ namespace MaterialDesignThemes.Wpf
             {
                 Dispatcher.BeginInvoke(action);
             }
-        }        
+        }
     }
 }

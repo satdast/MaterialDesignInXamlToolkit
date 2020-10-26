@@ -1,30 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MaterialDesignDemo
 {
-    /// <summary>
-    /// Interaction logic for Snackbars.xaml
-    /// </summary>
-    public partial class Snackbars : UserControl
+    public partial class Snackbars
     {
-        public Snackbars()
-        {
-            InitializeComponent();
-        }
+        public Snackbars() => InitializeComponent();
 
         private void SnackBar3_OnClick(object sender, RoutedEventArgs e)
         {
@@ -38,6 +21,8 @@ namespace MaterialDesignDemo
 
         private void SnackBar4_OnClick(object sender, RoutedEventArgs e)
         {
+            SnackbarFour.MessageQueue.IgnoreDuplicate = !(DiscardDuplicateCheckBox.IsChecked ?? false);
+
             foreach (var s in ExampleFourTextBox.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
             {
                 SnackbarFour.MessageQueue.Enqueue(
@@ -46,6 +31,22 @@ namespace MaterialDesignDemo
                 param => Trace.WriteLine("Actioned: " + param),
                 s);
             }
+        }
+
+        private void SnackBar4_OnClearClick(object sender, RoutedEventArgs e)
+            => SnackbarFour.MessageQueue.Clear();
+
+        private void SnackBar7_OnClick(object sender, RoutedEventArgs e)
+        {
+            var duration = MessageDurationOverrideSlider.Value;
+            SnackbarSeven.MessageQueue.Enqueue(
+                $"Hello world! Showing message for {duration:F1} seconds.",
+                null,
+                null,
+                null,
+                false,
+                true,
+                TimeSpan.FromSeconds(duration));
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MaterialDesignThemes.Wpf
@@ -16,11 +14,8 @@ namespace MaterialDesignThemes.Wpf
 
             public HintProxyBuilder(Func<Control, bool> canBuild, Func<Control, IHintProxy> build)
             {
-                if (canBuild == null) throw new ArgumentNullException(nameof(canBuild));
-                if (build == null) throw new ArgumentNullException(nameof(build));
-
-                _canBuild = canBuild;
-                _build = build;
+                _canBuild = canBuild ?? throw new ArgumentNullException(nameof(canBuild));
+                _build = build ?? throw new ArgumentNullException(nameof(build));
             }
 
             public bool CanBuild(Control control) => _canBuild(control);
@@ -31,8 +26,9 @@ namespace MaterialDesignThemes.Wpf
 
         static HintProxyFabric()
         {
-            Builders.Add(new HintProxyBuilder(c => c is ComboBox, c => new ComboBoxHintProxy((ComboBox) c)));
+            Builders.Add(new HintProxyBuilder(c => c is ComboBox, c => new ComboBoxHintProxy((ComboBox)c)));
             Builders.Add(new HintProxyBuilder(c => c is TextBox, c => new TextBoxHintProxy((TextBox)c)));
+            Builders.Add(new HintProxyBuilder(c => c is RichTextBox, c => new RichTextBoxHintProxy((RichTextBox)c)));
             Builders.Add(new HintProxyBuilder(c => c is PasswordBox, c => new PasswordBoxHintProxy((PasswordBox)c)));
         }
 

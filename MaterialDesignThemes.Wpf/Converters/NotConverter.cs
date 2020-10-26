@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialDesignThemes.Wpf.Converters
@@ -16,5 +15,5 @@ namespace MaterialDesignThemes.Wpf.Converters
         {
             return !(value as bool?) ?? !bool.Parse(value.ToString());
         }
-    }    
+    }
 }

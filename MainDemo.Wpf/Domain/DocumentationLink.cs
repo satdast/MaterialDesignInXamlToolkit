@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Configuration;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MaterialDesignDemo.Domain;
 
 namespace MaterialDesignColors.WpfExample.Domain
 {
@@ -18,7 +18,7 @@ namespace MaterialDesignColors.WpfExample.Domain
             Url = url;
             Type = type;
             Open = new AnotherCommandImplementation(Execute);
-        }        
+        }
 
         public static DocumentationLink WikiLink(string page, string label)
         {
@@ -27,7 +27,7 @@ namespace MaterialDesignColors.WpfExample.Domain
         }
 
         public static DocumentationLink StyleLink(string nameChunk)
-        {            
+        {
             return new DocumentationLink(
                 DocumentationLinkType.StyleSource,
                 $"{ConfigurationManager.AppSettings["GitHub"]}/blob/master/MaterialDesignThemes.Wpf/Themes/MaterialDesignTheme.{nameChunk}.xaml",
@@ -47,7 +47,12 @@ namespace MaterialDesignColors.WpfExample.Domain
 
         public static DocumentationLink ApiLink<TClass>()
         {
-            var typeName = typeof(TClass).Name;
+            return ApiLink(typeof(TClass));
+        }
+
+        public static DocumentationLink ApiLink(Type type)
+        {
+            var typeName = type.Name;
 
             return new DocumentationLink(
                 DocumentationLinkType.ControlSource,
@@ -74,7 +79,7 @@ namespace MaterialDesignColors.WpfExample.Domain
 
             return new DocumentationLink(
                 DocumentationLinkType.DemoPageSource,
-                $"{ConfigurationManager.AppSettings["GitHub"]}/blob/master/MainDemo.Wpf/{(string.IsNullOrWhiteSpace(nameSpace) ? "" : ("/" + nameSpace + "/" ))}{typeof(TDemoPage).Name}.{ext}",
+                $"{ConfigurationManager.AppSettings["GitHub"]}/blob/master/MainDemo.Wpf/{(string.IsNullOrWhiteSpace(nameSpace) ? "" : ("/" + nameSpace + "/"))}{typeof(TDemoPage).Name}.{ext}",
                 label ?? typeof(TDemoPage).Name);
         }
 
@@ -82,13 +87,13 @@ namespace MaterialDesignColors.WpfExample.Domain
 
         public string Url { get; }
 
-        public DocumentationLinkType Type { get; }        
+        public DocumentationLinkType Type { get; }
 
         public ICommand Open { get; }
 
         private void Execute(object o)
         {
-            System.Diagnostics.Process.Start(Url);
+            Link.OpenInBrowser(Url);
         }
     }
 }

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
 namespace MaterialDesignThemes.Wpf.Converters
-{    
+{
     public class CardClipConverter : IMultiValueConverter
     {
         /// <summary>
@@ -33,8 +29,8 @@ namespace MaterialDesignThemes.Wpf.Converters
             farPoint.Offset(padding.Left + padding.Right, padding.Top + padding.Bottom);
 
             return new Rect(
-                new Point(), 
-                new Point(farPoint.X, farPoint.Y));                                          
+                new Point(),
+                new Point(farPoint.X, farPoint.Y));
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

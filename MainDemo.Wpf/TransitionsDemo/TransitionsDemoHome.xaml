@@ -21,11 +21,15 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="256" />
         </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource MaterialDesignDisplay2TextBlock}">Transitions Demo</TextBlock>
+        <TextBlock Style="{StaticResource MaterialDesignHeadline3TextBlock}">Transitions Demo</TextBlock>
 
-        <smtx:XamlDisplay Key="transitions" Grid.Row="1">
+        <smtx:XamlDisplay UniqueKey="transitions" Grid.Row="1">
             <!-- the transitioner will manage your transitions. notice how SelectedIndex is set to zero: the first slide (instead of the default of -1) -->
             <materialDesign:Transitioner SelectedIndex="0" AutoApplyTransitionOrigins="True">
+                <materialDesign:Transitioner.InputBindings>
+                    <KeyBinding Key="Left" Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
+                    <KeyBinding Key="Right" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
+                </materialDesign:Transitioner.InputBindings>
 
                 <!-- you can use a slide for each page, let's add a touch of fade for our first page  -->
                 <materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">

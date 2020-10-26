@@ -103,11 +103,17 @@ namespace MaterialDesignThemes.Wpf
         public const string PopupContentControlPartName = "PART_PopupContentControl";
         public const string PopupIsOpenStateName = "IsOpen";
         public const string PopupIsClosedStateName = "IsClosed";
+
+        /// <summary>
+        /// Routed command to be used inside of a popup content to close it.
+        /// </summary>
+        public static RoutedCommand ClosePopupCommand = new RoutedCommand();
+
         private PopupEx _popup;
         private ContentControl _popupContentControl;
         private ToggleButton _toggleButton;
         private Point _popupPointFromLastRequest;
-        private Point _lastRelativePositon;
+        private Point _lastRelativePosition;
 
         static PopupBox()
         {
@@ -123,107 +129,107 @@ namespace MaterialDesignThemes.Wpf
         }
 
         public static readonly DependencyProperty ToggleContentProperty = DependencyProperty.Register(
-            nameof(ToggleContent), typeof (object), typeof (PopupBox), new PropertyMetadata(default(object)));
+            nameof(ToggleContent), typeof(object), typeof(PopupBox), new PropertyMetadata(default(object)));
 
         /// <summary>
         /// Content to display in the toggle button.
         /// </summary>
         public object ToggleContent
         {
-            get { return (object) GetValue(ToggleContentProperty); }
+            get { return (object)GetValue(ToggleContentProperty); }
             set { SetValue(ToggleContentProperty, value); }
         }
 
         public static readonly DependencyProperty ToggleContentTemplateProperty = DependencyProperty.Register(
-            nameof(ToggleContentTemplate), typeof (DataTemplate), typeof (PopupBox), new PropertyMetadata(default(DataTemplate)));
+            nameof(ToggleContentTemplate), typeof(DataTemplate), typeof(PopupBox), new PropertyMetadata(default(DataTemplate)));
 
         /// <summary>
         /// Template for <see cref="ToggleContent"/>.
         /// </summary>
         public DataTemplate ToggleContentTemplate
         {
-            get { return (DataTemplate) GetValue(ToggleContentTemplateProperty); }
+            get { return (DataTemplate)GetValue(ToggleContentTemplateProperty); }
             set { SetValue(ToggleContentTemplateProperty, value); }
         }
 
         public static readonly DependencyProperty ToggleCheckedContentProperty = DependencyProperty.Register(
-            nameof(ToggleCheckedContent), typeof (object), typeof (PopupBox), new PropertyMetadata(default(object)));
+            nameof(ToggleCheckedContent), typeof(object), typeof(PopupBox), new PropertyMetadata(default(object)));
 
         /// <summary>
         /// Content to display in the toggle when it's checked (when the popup is open). Optional; if not provided the <see cref="ToggleContent"/> is used.
         /// </summary>
         public object ToggleCheckedContent
         {
-            get { return (object) GetValue(ToggleCheckedContentProperty); }
+            get { return (object)GetValue(ToggleCheckedContentProperty); }
             set { SetValue(ToggleCheckedContentProperty, value); }
         }
 
         public static readonly DependencyProperty ToggleCheckedContentTemplateProperty = DependencyProperty.Register(
-            nameof(ToggleCheckedContentTemplate), typeof (DataTemplate), typeof (PopupBox), new PropertyMetadata(default(DataTemplate)));
+            nameof(ToggleCheckedContentTemplate), typeof(DataTemplate), typeof(PopupBox), new PropertyMetadata(default(DataTemplate)));
 
         /// <summary>
         /// Template for <see cref="ToggleCheckedContent"/>.
         /// </summary>
         public DataTemplate ToggleCheckedContentTemplate
         {
-            get { return (DataTemplate) GetValue(ToggleCheckedContentTemplateProperty); }
+            get { return (DataTemplate)GetValue(ToggleCheckedContentTemplateProperty); }
             set { SetValue(ToggleCheckedContentTemplateProperty, value); }
         }
 
         public static readonly DependencyProperty ToggleCheckedContentCommandProperty = DependencyProperty.Register(
-            nameof(ToggleCheckedContentCommand), typeof (ICommand), typeof (PopupBox), new PropertyMetadata(default(ICommand)));
+            nameof(ToggleCheckedContentCommand), typeof(ICommand), typeof(PopupBox), new PropertyMetadata(default(ICommand)));
 
         /// <summary>
         /// Command to execute if toggle is checked (popup is open) and <see cref="ToggleCheckedContent"/> is set.
         /// </summary>
         public ICommand ToggleCheckedContentCommand
         {
-            get { return (ICommand) GetValue(ToggleCheckedContentCommandProperty); }
+            get { return (ICommand)GetValue(ToggleCheckedContentCommandProperty); }
             set { SetValue(ToggleCheckedContentCommandProperty, value); }
         }
 
         public static readonly DependencyProperty ToggleCheckedContentCommandParameterProperty = DependencyProperty.Register(
-            nameof(ToggleCheckedContentCommandParameter), typeof (object), typeof (PopupBox), new PropertyMetadata(default(object)));
+            nameof(ToggleCheckedContentCommandParameter), typeof(object), typeof(PopupBox), new PropertyMetadata(default(object)));
 
         /// <summary>
         /// Command parameter to use in conjunction with <see cref="ToggleCheckedContentCommand"/>.
         /// </summary>
         public object ToggleCheckedContentCommandParameter
         {
-            get { return (object) GetValue(ToggleCheckedContentCommandParameterProperty); }
+            get { return (object)GetValue(ToggleCheckedContentCommandParameterProperty); }
             set { SetValue(ToggleCheckedContentCommandParameterProperty, value); }
         }
 
         public static readonly DependencyProperty PopupContentProperty = DependencyProperty.Register(
-            nameof(PopupContent), typeof (object), typeof (PopupBox), new PropertyMetadata(default(object)));
+            nameof(PopupContent), typeof(object), typeof(PopupBox), new PropertyMetadata(default(object)));
 
         /// <summary>
         /// Content to display in the content.
         /// </summary>
         public object PopupContent
         {
-            get { return (object) GetValue(PopupContentProperty); }
+            get { return (object)GetValue(PopupContentProperty); }
             set { SetValue(PopupContentProperty, value); }
         }
 
         public static readonly DependencyProperty PopupContentTemplateProperty = DependencyProperty.Register(
-            nameof(PopupContentTemplate), typeof (DataTemplate), typeof (PopupBox), new PropertyMetadata(default(DataTemplate)));
+            nameof(PopupContentTemplate), typeof(DataTemplate), typeof(PopupBox), new PropertyMetadata(default(DataTemplate)));
 
         /// <summary>
         /// Popup content template.
         /// </summary>
         public DataTemplate PopupContentTemplate
         {
-            get { return (DataTemplate) GetValue(PopupContentTemplateProperty); }
+            get { return (DataTemplate)GetValue(PopupContentTemplateProperty); }
             set { SetValue(PopupContentTemplateProperty, value); }
         }
 
         public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register(
-            nameof(IsPopupOpen), typeof (bool), typeof (PopupBox), new FrameworkPropertyMetadata(default(bool), IsPopupOpenPropertyChangedCallback));
+            nameof(IsPopupOpen), typeof(bool), typeof(PopupBox), new FrameworkPropertyMetadata(default(bool), IsPopupOpenPropertyChangedCallback));
 
         private static void IsPopupOpenPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var popupBox = (PopupBox) dependencyObject;
+            var popupBox = (PopupBox)dependencyObject;
             var newValue = (bool)dependencyPropertyChangedEventArgs.NewValue;
             if (popupBox.PopupMode == PopupBoxPopupMode.Click)
             {
@@ -249,24 +255,24 @@ namespace MaterialDesignThemes.Wpf
         /// </summary>
         public bool IsPopupOpen
         {
-            get { return (bool) GetValue(IsPopupOpenProperty); }
+            get { return (bool)GetValue(IsPopupOpenProperty); }
             set { SetValue(IsPopupOpenProperty, value); }
-        }        
+        }
 
         public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register(
-            nameof(StaysOpen), typeof (bool), typeof (PopupBox), new PropertyMetadata(default(bool)));
+            nameof(StaysOpen), typeof(bool), typeof(PopupBox), new PropertyMetadata(default(bool)));
 
         /// <summary>
         /// Indicates of the popup should stay open if a click occurs inside the popup.
         /// </summary>
         public bool StaysOpen
         {
-            get { return (bool) GetValue(StaysOpenProperty); }
+            get { return (bool)GetValue(StaysOpenProperty); }
             set { SetValue(StaysOpenProperty, value); }
         }
 
         public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register(
-            nameof(PlacementMode), typeof (PopupBoxPlacementMode), typeof (PopupBox), new PropertyMetadata(default(PopupBoxPlacementMode), PlacementModePropertyChangedCallback));
+            nameof(PlacementMode), typeof(PopupBoxPlacementMode), typeof(PopupBox), new PropertyMetadata(default(PopupBoxPlacementMode), PlacementModePropertyChangedCallback));
 
         private static void PlacementModePropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
@@ -278,19 +284,19 @@ namespace MaterialDesignThemes.Wpf
         /// </summary>
         public PopupBoxPlacementMode PlacementMode
         {
-            get { return (PopupBoxPlacementMode) GetValue(PlacementModeProperty); }
+            get { return (PopupBoxPlacementMode)GetValue(PlacementModeProperty); }
             set { SetValue(PlacementModeProperty, value); }
         }
 
         public static readonly DependencyProperty PopupModeProperty = DependencyProperty.Register(
-            nameof(PopupMode), typeof (PopupBoxPopupMode), typeof (PopupBox), new PropertyMetadata(default(PopupBoxPopupMode)));
+            nameof(PopupMode), typeof(PopupBoxPopupMode), typeof(PopupBox), new PropertyMetadata(default(PopupBoxPopupMode)));
 
         /// <summary>
         /// Gets or sets what trigger causes the popup to open.
         /// </summary>
         public PopupBoxPopupMode PopupMode
         {
-            get { return (PopupBoxPopupMode) GetValue(PopupModeProperty); }
+            get { return (PopupBoxPopupMode)GetValue(PopupModeProperty); }
             set { SetValue(PopupModeProperty, value); }
         }
 
@@ -298,15 +304,45 @@ namespace MaterialDesignThemes.Wpf
         /// Get or sets how to unfurl controls when opening the popups. Only child elements of type <see cref="ButtonBase"/> are animated.
         /// </summary>
         public static readonly DependencyProperty UnfurlOrientationProperty = DependencyProperty.Register(
-            nameof(UnfurlOrientation), typeof (Orientation), typeof (PopupBox), new PropertyMetadata(Orientation.Vertical));
+            nameof(UnfurlOrientation), typeof(Orientation), typeof(PopupBox), new PropertyMetadata(Orientation.Vertical));
 
         /// <summary>
         /// Gets or sets how to unfurl controls when opening the popups. Only child elements of type <see cref="ButtonBase"/> are animated.
         /// </summary>
         public Orientation UnfurlOrientation
         {
-            get { return (Orientation) GetValue(UnfurlOrientationProperty); }
+            get { return (Orientation)GetValue(UnfurlOrientationProperty); }
             set { SetValue(UnfurlOrientationProperty, value); }
+        }
+
+        /// <summary>
+        /// Get or sets the popup horizontal offset in relation to the button.
+        /// </summary>
+        public static readonly DependencyProperty PopupHorizontalOffsetProperty = DependencyProperty.Register(
+            nameof(PopupHorizontalOffset), typeof(double), typeof(PopupBox), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Get or sets the popup horizontal offset in relation to the button.
+        /// </summary>
+        public double PopupHorizontalOffset
+        {
+            get { return (double)GetValue(PopupHorizontalOffsetProperty); }
+            set { SetValue(PopupHorizontalOffsetProperty, value); }
+        }
+
+        /// <summary>
+        /// Get or sets the popup vertical offset in relation to the button.
+        /// </summary>
+        public static readonly DependencyProperty PopupVerticalOffsetProperty = DependencyProperty.Register(
+            nameof(PopupVerticalOffset), typeof(double), typeof(PopupBox), new PropertyMetadata(default(double)));
+
+        /// <summary>
+        /// Get or sets the popup vertical offset in relation to the button.
+        /// </summary>
+        public double PopupVerticalOffset
+        {
+            get { return (double)GetValue(PopupVerticalOffsetProperty); }
+            set { SetValue(PopupVerticalOffsetProperty, value); }
         }
 
         /// <summary>
@@ -367,7 +403,7 @@ namespace MaterialDesignThemes.Wpf
                 typeof(PopupBox));
 
         /// <summary>
-        /// Raised when the popup is opened.
+        /// Raised when the popup is closed.
         /// </summary>
         public event RoutedEventHandler Closed
         {
@@ -386,8 +422,6 @@ namespace MaterialDesignThemes.Wpf
 
         public override void OnApplyTemplate()
         {
-            if (_popup != null)
-                _popup.Loaded -= PopupOnLoaded;
             if (_toggleButton != null)
                 _toggleButton.PreviewMouseLeftButtonUp -= ToggleButtonOnPreviewMouseLeftButtonUp;
 
@@ -397,8 +431,8 @@ namespace MaterialDesignThemes.Wpf
             _popupContentControl = GetTemplateChild(PopupContentControlPartName) as ContentControl;
             _toggleButton = GetTemplateChild(TogglePartName) as ToggleButton;
 
-            if (_popup != null)
-                _popup.Loaded += PopupOnLoaded;
+            _popup?.CommandBindings.Add(new CommandBinding(ClosePopupCommand, ClosePopupHandler));
+
             if (_toggleButton != null)
                 _toggleButton.PreviewMouseLeftButtonUp += ToggleButtonOnPreviewMouseLeftButtonUp;
 
@@ -409,7 +443,7 @@ namespace MaterialDesignThemes.Wpf
         {
             base.OnIsKeyboardFocusWithinChanged(e);
 
-            if (IsPopupOpen && !IsKeyboardFocusWithin)
+            if (IsPopupOpen && !IsKeyboardFocusWithin && !StaysOpen)
             {
                 Close();
             }
@@ -432,9 +466,9 @@ namespace MaterialDesignThemes.Wpf
                         popupScreenPoint.Offset(-_popupContentControl.Margin.Left, -_popupContentControl.Margin.Top);
                         var expectedPopupScreenPoint = PointToScreen(_popupPointFromLastRequest);
 
-                        if (Math.Abs(popupScreenPoint.X - expectedPopupScreenPoint.X) > ActualWidth/3
+                        if (Math.Abs(popupScreenPoint.X - expectedPopupScreenPoint.X) > ActualWidth / 3
                             ||
-                            Math.Abs(popupScreenPoint.Y - expectedPopupScreenPoint.Y) > ActualHeight/3)
+                            Math.Abs(popupScreenPoint.Y - expectedPopupScreenPoint.Y) > ActualHeight / 3)
                             return;
                     }
                 }
@@ -444,20 +478,25 @@ namespace MaterialDesignThemes.Wpf
             base.OnMouseEnter(e);
         }
 
+        private void ClosePopupHandler(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
+        {
+            IsPopupOpen = false;
+        }
+
         private void OnLayoutUpdated(object sender, EventArgs eventArgs)
         {
             if (_popupContentControl != null && _popup != null &&
                 (PopupMode == PopupBoxPopupMode.MouseOver || PopupMode == PopupBoxPopupMode.MouseOverEager))
             {
                 Point relativePosition = _popupContentControl.TranslatePoint(new Point(), this);
-                if (relativePosition != _lastRelativePositon)
+                if (relativePosition != _lastRelativePosition)
                 {
                     _popup.RefreshPosition();
-                    _lastRelativePositon = _popupContentControl.TranslatePoint(new Point(), this);
+                    _lastRelativePosition = _popupContentControl.TranslatePoint(new Point(), this);
                 }
             }
         }
-        
+
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             if (PopupMode == PopupBoxPopupMode.MouseOverEager
@@ -465,7 +504,7 @@ namespace MaterialDesignThemes.Wpf
 
                 Close();
 
-            base.OnMouseEnter(e);
+            base.OnMouseLeave(e);
         }
 
         protected void Close()
@@ -473,7 +512,7 @@ namespace MaterialDesignThemes.Wpf
             if (IsPopupOpen)
                 SetCurrentValue(IsPopupOpenProperty, false);
         }
-        
+
         private CustomPopupPlacement[] GetPopupPlacement(Size popupSize, Size targetSize, Point offset)
         {
             double x, y;
@@ -484,7 +523,7 @@ namespace MaterialDesignThemes.Wpf
             switch (PlacementMode)
             {
                 case PopupBoxPlacementMode.BottomAndAlignLeftEdges:
-                    x = 0 - Math.Abs(offset.X*3);
+                    x = 0 - Math.Abs(offset.X * 3);
                     y = targetSize.Height - Math.Abs(offset.Y);
                     break;
                 case PopupBoxPlacementMode.BottomAndAlignRightEdges:
@@ -492,19 +531,19 @@ namespace MaterialDesignThemes.Wpf
                     y = targetSize.Height - Math.Abs(offset.Y);
                     break;
                 case PopupBoxPlacementMode.BottomAndAlignCentres:
-                    x = targetSize.Width/2 - popupSize.Width/2 - Math.Abs(offset.X*2);
+                    x = targetSize.Width / 2 - popupSize.Width / 2 - Math.Abs(offset.X * 2);
                     y = targetSize.Height - Math.Abs(offset.Y);
                     break;
                 case PopupBoxPlacementMode.TopAndAlignLeftEdges:
                     x = 0 - Math.Abs(offset.X * 3);
-                    y = 0 - popupSize.Height - Math.Abs(offset.Y*2);
+                    y = 0 - popupSize.Height - Math.Abs(offset.Y * 2);
                     break;
                 case PopupBoxPlacementMode.TopAndAlignRightEdges:
                     x = 0 - popupSize.Width + targetSize.Width - offset.X;
                     y = 0 - popupSize.Height - Math.Abs(offset.Y * 2);
                     break;
                 case PopupBoxPlacementMode.TopAndAlignCentres:
-                    x = targetSize.Width/2 - popupSize.Width/2 - Math.Abs(offset.X*2);
+                    x = targetSize.Width / 2 - popupSize.Width / 2 - Math.Abs(offset.X * 2);
                     y = 0 - popupSize.Height - Math.Abs(offset.Y * 2);
                     break;
                 case PopupBoxPlacementMode.LeftAndAlignTopEdges:
@@ -534,9 +573,9 @@ namespace MaterialDesignThemes.Wpf
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             _popupPointFromLastRequest = new Point(x, y);
-            return new[] {new CustomPopupPlacement(_popupPointFromLastRequest, PopupPrimaryAxis.Horizontal)};
+            return new[] { new CustomPopupPlacement(_popupPointFromLastRequest, PopupPrimaryAxis.Horizontal) };
         }
 
         private void AnimateChildrenIn(bool reverse)
@@ -574,9 +613,9 @@ namespace MaterialDesignThemes.Wpf
 
             var i = 0;
             foreach (var uiElement in controls)
-            {                
-                var deferredStart = i++*20;
-                var deferredEnd = deferredStart+200.0;                
+            {
+                var deferredStart = i++ * 20;
+                var deferredEnd = deferredStart + 200.0;
 
                 var absoluteZeroKeyTime = KeyTime.FromPercent(0.0);
                 var deferredStartKeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(deferredStart));
@@ -588,7 +627,7 @@ namespace MaterialDesignThemes.Wpf
                     UnfurlOrientation == Orientation.Vertical ? elementTranslateCoordinateFrom : 0);
 
                 var transformGroup = new TransformGroup
-                {                    
+                {
                     Children = new TransformCollection(new Transform[]
                     {
                         new ScaleTransform(0, 0),
@@ -628,7 +667,7 @@ namespace MaterialDesignThemes.Wpf
                 Storyboard.SetTarget(translateCoordinateAnimation, uiElement);
 
                 var storyboard = new Storyboard();
-                
+
                 storyboard.Children.Add(opacityAnimation);
                 storyboard.Children.Add(scaleXAnimation);
                 storyboard.Children.Add(scaleYAnimation);
@@ -642,8 +681,8 @@ namespace MaterialDesignThemes.Wpf
                     storyboard.Resume();
                 }
                 else
-                    storyboard.Begin();                
-            }            
+                    storyboard.Begin();
+            }
         }
 
         #region Capture
@@ -653,7 +692,7 @@ namespace MaterialDesignThemes.Wpf
 
         private static void OnLostMouseCapture(object sender, MouseEventArgs e)
         {
-            var popupBox = (PopupBox) sender;
+            var popupBox = (PopupBox)sender;
 
             if (Equals(Mouse.Captured, popupBox)) return;
 
@@ -668,7 +707,7 @@ namespace MaterialDesignThemes.Wpf
                 }
             }
             else
-            {                
+            {
                 if ((Mouse.Captured as DependencyObject).GetVisualAncestry().Contains(popupBox._popup.Child))
                 {
                     // Take capture if one of our children gave up capture (by closing their drop down)
@@ -698,7 +737,7 @@ namespace MaterialDesignThemes.Wpf
 
         private static void OnMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var popupBox = (PopupBox) sender;
+            var popupBox = (PopupBox)sender;
 
             if (!popupBox.IsKeyboardFocusWithin)
             {
@@ -726,16 +765,10 @@ namespace MaterialDesignThemes.Wpf
 
         #endregion
 
-        private void PopupOnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (PopupMode == PopupBoxPopupMode.MouseOverEager)
-                _popup.IsOpen = true;
-        }
-
         private void ToggleButtonOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (PopupMode == PopupBoxPopupMode.Click || !IsPopupOpen) return;
-            
+
             if (ToggleCheckedContent != null)
             {
                 OnToggleCheckedContentClick();
@@ -747,7 +780,7 @@ namespace MaterialDesignThemes.Wpf
                     ToggleCheckedContentCommand.Execute(ToggleCheckedContentCommandParameter);
                 }
             }
-            
+
             Close();
             Mouse.Capture(null);
             mouseButtonEventArgs.Handled = true;
@@ -755,7 +788,7 @@ namespace MaterialDesignThemes.Wpf
 
         private static object CoerceToolTipIsEnabled(DependencyObject dependencyObject, object value)
         {
-            var popupBox = (PopupBox) dependencyObject;
+            var popupBox = (PopupBox)dependencyObject;
             return popupBox.IsPopupOpen ? false : value;
         }
     }

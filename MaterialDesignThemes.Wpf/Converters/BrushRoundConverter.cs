@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -13,7 +12,7 @@ namespace MaterialDesignThemes.Wpf.Converters
         public Brush LowValue { get; set; } = Brushes.Black;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {            
+        {
             var solidColorBrush = value as SolidColorBrush;
             if (solidColorBrush == null) return null;
 

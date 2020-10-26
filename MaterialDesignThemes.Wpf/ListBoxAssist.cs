@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,13 +10,13 @@ namespace MaterialDesignThemes.Wpf
     {
         static ListBoxAssist()
         {
-            EventManager.RegisterClassHandler(typeof (ListBox), UIElement.PreviewMouseLeftButtonDownEvent,
+            EventManager.RegisterClassHandler(typeof(ListBox), UIElement.PreviewMouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(ListBoxMouseButtonEvent));
         }
 
         private static void ListBoxMouseButtonEvent(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            var senderElement = (UIElement) sender;
+            var senderElement = (UIElement)sender;
 
             if (!GetIsToggle(senderElement)) return;
 
@@ -38,15 +34,14 @@ namespace MaterialDesignThemes.Wpf
                     ripple = dependencyObject as Ripple;
             }
 
-            if (listBoxItem == null) return;
+            if (listBoxItem == null || !listBoxItem.IsEnabled) return;
 
             listBoxItem.SetCurrentValue(ListBoxItem.IsSelectedProperty, !listBoxItem.IsSelected);
             mouseButtonEventArgs.Handled = true;
 
             if (ripple != null && listBoxItem.IsSelected)
             {
-                ripple.RaiseEvent(new MouseButtonEventArgs(mouseButtonEventArgs.MouseDevice, mouseButtonEventArgs.Timestamp, mouseButtonEventArgs.ChangedButton)
-                { RoutedEvent = Control.PreviewMouseLeftButtonDownEvent, Source = ripple }
+                ripple.RaiseEvent(new MouseButtonEventArgs(mouseButtonEventArgs.MouseDevice, mouseButtonEventArgs.Timestamp, mouseButtonEventArgs.ChangedButton) { RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent, Source = ripple }
                 );
             }
         }

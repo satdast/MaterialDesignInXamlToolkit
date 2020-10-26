@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace MaterialDesignThemes.Wpf
 {
@@ -42,7 +43,6 @@ namespace MaterialDesignThemes.Wpf
             return (Thickness)element.GetValue(TextBoxViewMarginProperty);
         }
 
-
         /// <summary>
         /// Controls the visibility of the underline decoration.
         /// </summary>
@@ -68,39 +68,128 @@ namespace MaterialDesignThemes.Wpf
         }
 
         /// <summary>
-        /// Controls the visbility of the text field box.
+        /// The attached WPF property for getting or setting the <see cref="Brush"/> value for an underline decoration.
         /// </summary>
-        public static readonly DependencyProperty HasTextFieldBoxProperty = DependencyProperty.RegisterAttached(
-            "HasTextFieldBox", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
+        public static readonly DependencyProperty UnderlineBrushProperty = DependencyProperty.RegisterAttached(
+            "UnderlineBrush", typeof(Brush), typeof(TextFieldAssist), new PropertyMetadata(Brushes.Transparent));
 
-        public static void SetHasTextFieldBox(DependencyObject element, bool value)
+        /// <summary>
+        /// Sets the <see cref="Brush"/> used for underline decoration.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        public static void SetUnderlineBrush(DependencyObject element, Brush value)
         {
-            element.SetValue(HasTextFieldBoxProperty, value);
+            element.SetValue(UnderlineBrushProperty, value);
         }
 
-        public static bool GetHasTextFieldBox(DependencyObject element)
+        /// <summary>
+        /// Gets the <see cref="Brush"/> used for underline decoration.
+        /// </summary>
+        /// <param name="element"></param>
+        public static Brush GetUnderlineBrush(DependencyObject element)
         {
-            return (bool)element.GetValue(HasTextFieldBoxProperty);
+            return (Brush)element.GetValue(UnderlineBrushProperty);
+        }
+
+        /// <summary>
+        /// Controls the visbility of the text field box.
+        /// </summary>
+        public static readonly DependencyProperty HasFilledTextFieldProperty = DependencyProperty.RegisterAttached(
+            "HasFilledTextField", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
+
+        public static void SetHasFilledTextField(DependencyObject element, bool value)
+        {
+            element.SetValue(HasFilledTextFieldProperty, value);
+        }
+
+        public static bool GetHasFilledTextField(DependencyObject element)
+        {
+            return (bool)element.GetValue(HasFilledTextFieldProperty);
         }
 
         /// <summary>
         /// Controls the visibility of the text field area box.
         /// </summary>
-        public static readonly DependencyProperty HasTextAreaBoxProperty = DependencyProperty.RegisterAttached(
-            "HasTextAreaBox", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
+        public static readonly DependencyProperty HasOutlinedTextFieldProperty = DependencyProperty.RegisterAttached(
+            "HasOutlinedTextField", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
 
-        public static void SetHasTextAreaBox(DependencyObject element, bool value)
+        public static void SetHasOutlinedTextField(DependencyObject element, bool value)
         {
-            element.SetValue(HasTextAreaBoxProperty, value);
+            element.SetValue(HasOutlinedTextFieldProperty, value);
         }
 
-        public static bool GetHasTextAreaBox(DependencyObject element)
+        public static bool GetHasOutlinedTextField(DependencyObject element)
         {
-            return (bool)element.GetValue(HasTextAreaBoxProperty);
+            return (bool)element.GetValue(HasOutlinedTextFieldProperty);
         }
 
         /// <summary>
-        /// Automatially inserts spelling suggestions into the text box context menu.
+        /// Controls the corner radius of the surrounding box.
+        /// </summary>
+        public static readonly DependencyProperty TextFieldCornerRadiusProperty = DependencyProperty.RegisterAttached(
+            "TextFieldCornerRadius", typeof(CornerRadius), typeof(TextFieldAssist), new PropertyMetadata(new CornerRadius(0.0)));
+
+        public static void SetTextFieldCornerRadius(DependencyObject element, CornerRadius value)
+        {
+            element.SetValue(TextFieldCornerRadiusProperty, value);
+        }
+
+        public static CornerRadius GetTextFieldCornerRadius(DependencyObject element)
+        {
+            return (CornerRadius)element.GetValue(TextFieldCornerRadiusProperty);
+        }
+
+        /// <summary>
+        /// Controls the corner radius of the bottom line of the surrounding box.
+        /// </summary>
+        public static readonly DependencyProperty UnderlineCornerRadiusProperty = DependencyProperty.RegisterAttached(
+            "UnderlineCornerRadius", typeof(CornerRadius), typeof(TextFieldAssist), new PropertyMetadata(new CornerRadius(0.0)));
+
+        public static void SetUnderlineCornerRadius(DependencyObject element, CornerRadius value)
+        {
+            element.SetValue(UnderlineCornerRadiusProperty, value);
+        }
+
+        public static CornerRadius GetUnderlineCornerRadius(DependencyObject element)
+        {
+            return (CornerRadius)element.GetValue(UnderlineCornerRadiusProperty);
+        }
+
+        /// <summary>
+        /// Controls the highlighting style of a text box.
+        /// </summary>
+        public static readonly DependencyProperty NewSpecHighlightingEnabledProperty = DependencyProperty.RegisterAttached(
+            "NewSpecHighlightingEnabled", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
+
+        public static void SetNewSpecHighlightingEnabled(DependencyObject element, bool value)
+        {
+            element.SetValue(NewSpecHighlightingEnabledProperty, value);
+        }
+
+        public static bool GetNewSpecHighlightingEnabled(DependencyObject element)
+        {
+            return (bool)element.GetValue(NewSpecHighlightingEnabledProperty);
+        }
+
+        /// <summary>
+        /// Enables a ripple effect on focusing the text box.
+        /// </summary>
+        public static readonly DependencyProperty RippleOnFocusEnabledProperty = DependencyProperty.RegisterAttached(
+            "RippleOnFocusEnabled", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false));
+
+        public static void SetRippleOnFocusEnabled(DependencyObject element, bool value)
+        {
+            element.SetValue(RippleOnFocusEnabledProperty, value);
+        }
+
+        public static bool GetRippleOnFocusEnabled(DependencyObject element)
+        {
+            return (bool)element.GetValue(RippleOnFocusEnabledProperty);
+        }
+
+        /// <summary>
+        /// Automatically inserts spelling suggestions into the text box context menu.
         /// </summary>
         public static readonly DependencyProperty IncludeSpellingSuggestionsProperty = DependencyProperty.RegisterAttached(
             "IncludeSpellingSuggestions", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(default(bool), IncludeSpellingSuggestionsChanged));
@@ -117,8 +206,7 @@ namespace MaterialDesignThemes.Wpf
 
         private static void IncludeSpellingSuggestionsChanged(DependencyObject element, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = element as TextBoxBase;
-            if (textBox != null)
+            if (element is TextBoxBase textBox)
             {
                 if ((bool)e.NewValue)
                 {
@@ -198,13 +286,12 @@ namespace MaterialDesignThemes.Wpf
 
         private static SpellingError GetSpellingError(TextBoxBase textBoxBase)
         {
-            var textBox = textBoxBase as TextBox;
-            if (textBox != null)
+            if (textBoxBase is TextBox textBox)
             {
                 return textBox.GetSpellingError(textBox.CaretIndex);
             }
-            var richTextBox = textBoxBase as RichTextBox;
-            if (richTextBox != null)
+
+            if (textBoxBase is RichTextBox richTextBox)
             {
                 return richTextBox.GetSpellingError(richTextBox.CaretPosition);
             }
@@ -223,12 +310,89 @@ namespace MaterialDesignThemes.Wpf
         private static void RemoveSpellingSuggestions(ContextMenu menu)
         {
             foreach (FrameworkElement item in (from item in menu.Items.OfType<FrameworkElement>()
-                                     where ReferenceEquals(item.Tag, typeof(Spelling))
-                                     select item).ToList())
+                where ReferenceEquals(item.Tag, typeof(Spelling))
+                select item).ToList())
             {
                 menu.Items.Remove(item);
             }
         }
+
+        /// <summary>
+        /// Controls the visbility of the clear button.
+        /// </summary>
+        public static readonly DependencyProperty HasClearButtonProperty = DependencyProperty.RegisterAttached(
+            "HasClearButton", typeof(bool), typeof(TextFieldAssist), new PropertyMetadata(false, HasClearButtonChanged));
+
+        private static void HasClearButtonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var box = d as Control; //could be a text box or password box
+            if (box == null)
+            {
+                return;
+            }
+
+            if (box.IsLoaded)
+                SetClearHandler(box);
+            else
+                box.Loaded += (sender, args) =>
+                    SetClearHandler(box);
+        }
+
+        private static void SetClearHandler(Control box)
+        {
+            var bValue = GetHasClearButton(box);
+            var clearButton = box.Template.FindName("PART_ClearButton", box) as Button;
+            if (clearButton != null)
+            {
+                RoutedEventHandler handler = (sender, args) =>
+                {
+                    (box as TextBox)?.SetCurrentValue(TextBox.TextProperty, null);
+                    (box as ComboBox)?.SetCurrentValue(ComboBox.TextProperty, null);
+                    if (box is PasswordBox)
+                        (box as PasswordBox).Password = null;
+                };
+                if (bValue)
+                    clearButton.Click += handler;
+                else
+                    clearButton.Click -= handler;
+            }
+        }
+
+        public static void SetHasClearButton(DependencyObject element, bool value)
+        {
+            element.SetValue(HasClearButtonProperty, value);
+        }
+
+        public static bool GetHasClearButton(DependencyObject element)
+        {
+            return (bool)element.GetValue(HasClearButtonProperty);
+        }
+
+        /// <summary>
+        /// SuffixText dependency property
+        /// </summary>
+        public static readonly DependencyProperty SuffixTextProperty = DependencyProperty.RegisterAttached(
+            "SuffixText", typeof(string), typeof(TextFieldAssist), new PropertyMetadata(default(string)));
+
+        public static void SetSuffixText(DependencyObject element, string value)
+        {
+            element.SetValue(SuffixTextProperty, value);
+        }
+
+        public static string GetSuffixText(DependencyObject element)
+        {
+            return (string)element.GetValue(SuffixTextProperty);
+        }
+
+        /// <summary>
+        /// PrefixText dependency property
+        /// </summary>
+        public static readonly DependencyProperty PrefixTextProperty = DependencyProperty.RegisterAttached(
+            "PrefixText", typeof(string), typeof(TextFieldAssist), new PropertyMetadata(default(string)));
+
+        public static void SetPrefixText(DependencyObject element, string value) => element.SetValue(PrefixTextProperty, value);
+
+        public static string GetPrefixText(DependencyObject element) => (string)element.GetValue(PrefixTextProperty);
 
         #region Methods
 
@@ -239,16 +403,22 @@ namespace MaterialDesignThemes.Wpf
         /// <param name="margin">The margin.</param>
         private static void ApplyTextBoxViewMargin(Control textBox, Thickness margin)
         {
-            if (margin.Equals(new Thickness(double.NegativeInfinity)))
-            {
+            if (margin.Equals(new Thickness(double.NegativeInfinity))
+                || textBox.Template == null)
                 return;
+
+            if (textBox is ComboBox
+                && textBox.Template.FindName("PART_EditableTextBox", textBox) is TextBox editableTextBox)
+            {
+                textBox = editableTextBox;
+                if (textBox.Template == null)
+                    return;
+                textBox.ApplyTemplate();
             }
 
-            var frameworkElement = (textBox.Template.FindName("PART_ContentHost", textBox) as ScrollViewer)?.Content as FrameworkElement;
-            if (frameworkElement != null)
-            {
+            if (textBox.Template.FindName("PART_ContentHost", textBox) is ScrollViewer scrollViewer
+                && scrollViewer.Content is FrameworkElement frameworkElement)
                 frameworkElement.Margin = margin;
-            }
         }
 
         /// <summary>
@@ -260,8 +430,7 @@ namespace MaterialDesignThemes.Wpf
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var box = dependencyObject as Control; //could be a text box or password box
-            if (box == null)
+            if (!(dependencyObject is Control box))
             {
                 return;
             }

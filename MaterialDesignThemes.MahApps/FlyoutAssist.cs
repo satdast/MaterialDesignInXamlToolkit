@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using MaterialDesignThemes.Wpf;
 
 namespace MaterialDesignThemes.MahApps
@@ -24,7 +19,7 @@ namespace MaterialDesignThemes.MahApps
         }
 
         public static readonly DependencyProperty HeaderShadowDepthProperty = DependencyProperty.RegisterAttached(
-            "HeaderShadowDepth", typeof (ShadowDepth), typeof (FlyoutAssist), new FrameworkPropertyMetadata(default(ShadowDepth), FrameworkPropertyMetadataOptions.Inherits));
+            "HeaderShadowDepth", typeof(ShadowDepth), typeof(FlyoutAssist), new FrameworkPropertyMetadata(default(ShadowDepth), FrameworkPropertyMetadataOptions.Inherits));
 
         public static void SetHeaderShadowDepth(DependencyObject element, ShadowDepth value)
         {
@@ -33,7 +28,7 @@ namespace MaterialDesignThemes.MahApps
 
         public static ShadowDepth GetHeaderShadowDepth(DependencyObject element)
         {
-            return (ShadowDepth) element.GetValue(HeaderShadowDepthProperty);
+            return (ShadowDepth)element.GetValue(HeaderShadowDepthProperty);
         }
     }
 }

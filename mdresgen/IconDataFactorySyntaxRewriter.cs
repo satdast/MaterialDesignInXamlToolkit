@@ -9,13 +9,11 @@ namespace mdresgen
 {
     internal class IconDataFactorySyntaxRewriter : CSharpSyntaxRewriter
     {
-        private readonly IEnumerable<Tuple<string, string>> _nameDataPairs;
+        private readonly IEnumerable<Icon> _icons;
 
-        public IconDataFactorySyntaxRewriter(IEnumerable<Tuple<string, string>> nameDataPairs, bool visitIntoStructuredTrivia = false) : base(visitIntoStructuredTrivia)
+        public IconDataFactorySyntaxRewriter(IEnumerable<Icon> icons, bool visitIntoStructuredTrivia = false) : base(visitIntoStructuredTrivia)
         {
-            if (nameDataPairs == null) throw new ArgumentNullException(nameof(nameDataPairs));
-
-            _nameDataPairs = nameDataPairs;
+            _icons = icons ?? throw new ArgumentNullException(nameof(icons));
         }
 
         public override SyntaxNode VisitInitializerExpression(InitializerExpressionSyntax node)
@@ -23,33 +21,41 @@ namespace mdresgen
             if (node.Kind() != SyntaxKind.CollectionInitializerExpression)
                 return node;
 
-            var initialiserExpressions = GetInitializerItems(_nameDataPairs);
+            var initialiserExpressions = GetInitializerItems(_icons);
             var complexElementInitializerExpression = SyntaxFactory.InitializerExpression(SyntaxKind.ComplexElementInitializerExpression, initialiserExpressions);
 
             return complexElementInitializerExpression;
         }
 
-        private SeparatedSyntaxList<ExpressionSyntax> GetInitializerItems(
-            IEnumerable<Tuple<string, string>> nameDataPairs)
+        private static SeparatedSyntaxList<ExpressionSyntax> GetInitializerItems(
+            IEnumerable<Icon> icons)
         {
-            var initializerExpressionSyntaxList = nameDataPairs.Select(pair =>
+            var comma = SyntaxFactory.Token(SyntaxKind.CommaToken);
+            var trailingTriviaList = SyntaxTriviaList.Create(SyntaxFactory.ElasticCarriageReturnLineFeed);
+            var separator = SyntaxFactory.Identifier(SyntaxTriviaList.Empty, comma.Text, trailingTriviaList);
+
+            var initializerExpressionSyntaxList = icons.Select(icon =>
             {
-                //create a member access expression            
+                //Indent
+                var indent = SyntaxTriviaList.Create(SyntaxFactory.Whitespace("            "));
+
+                //create a member access expression
                 var memberAccessExpressionSyntax =
                     SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
                         SyntaxFactory.IdentifierName("PackIconKind"),
-                        SyntaxFactory.IdentifierName((string) pair.Item1));
+                        SyntaxFactory.IdentifierName(icon.Name));
 
                 //create a string literal expression
                 var literalExpressionSyntax = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression,
-                    SyntaxFactory.Literal((string) pair.Item2));
+                    SyntaxFactory.Literal(icon.Data));
 
-                var separatedSyntaxList = SyntaxFactory.SeparatedList<ExpressionSyntax>(new ExpressionSyntax[] { memberAccessExpressionSyntax, literalExpressionSyntax });
-                var initializerExpressionSyntax = SyntaxFactory.InitializerExpression(SyntaxKind.ComplexElementInitializerExpression, separatedSyntaxList);
+                var separatedSyntaxList = SyntaxFactory.SeparatedList(new ExpressionSyntax[] { memberAccessExpressionSyntax, literalExpressionSyntax });
+                var initializerExpressionSyntax = SyntaxFactory.InitializerExpression(SyntaxKind.ComplexElementInitializerExpression, separatedSyntaxList)
+                    .WithLeadingTrivia(indent);
                 return (ExpressionSyntax)initializerExpressionSyntax;
-            });
+            }).ToList();
 
-            var result = SyntaxFactory.SeparatedList(initializerExpressionSyntaxList);
+            var result = SyntaxFactory.SeparatedList(initializerExpressionSyntaxList, Enumerable.Repeat(separator, initializerExpressionSyntaxList.Count - 1));
 
             return result;
         }

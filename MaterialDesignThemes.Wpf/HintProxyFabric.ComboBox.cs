@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -39,7 +35,7 @@ namespace MaterialDesignThemes.Wpf
                     }
 
                     var comboBoxItem = _comboBox.SelectedItem as ComboBoxItem;
-                    return comboBoxItem != null 
+                    return comboBoxItem != null
                         ? comboBoxItem.Content
                         : _comboBox.SelectedItem;
                 }
@@ -47,7 +43,7 @@ namespace MaterialDesignThemes.Wpf
 
             public bool IsLoaded => _comboBox.IsLoaded;
 
-            public bool IsVisible => _comboBox.IsVisible;            
+            public bool IsVisible => _comboBox.IsVisible;
 
             public bool IsEmpty() => string.IsNullOrEmpty(_comboBox.Text);
 
@@ -90,7 +86,7 @@ namespace MaterialDesignThemes.Wpf
                 _comboBox.RemoveHandler(TextBoxBase.TextChangedEvent, _comboBoxTextChangedEventHandler);
                 _comboBox.Loaded -= ComboBoxLoaded;
                 _comboBox.IsVisibleChanged -= ComboBoxIsVisibleChanged;
-                _comboBox.SelectionChanged -= ComboBoxSelectionChanged;                
+                _comboBox.SelectionChanged -= ComboBoxSelectionChanged;
                 _comboBox.IsKeyboardFocusWithinChanged -= ComboBoxIsKeyboardFocusWithinChanged;
             }
         }

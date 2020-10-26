@@ -1,21 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace MaterialDesignThemes.Wpf.Converters
 {
-    public enum MathOperation
-    {
-        Add,
-        Subtract,
-        Multiply,
-        Divide
-    }
-
     public sealed class MathConverter : IValueConverter
     {
         public MathOperation Operation { get; set; }
@@ -36,6 +24,8 @@ namespace MaterialDesignThemes.Wpf.Converters
                         return value1 * value2;
                     case MathOperation.Subtract:
                         return value1 - value2;
+                    case MathOperation.Pow:
+                        return Math.Pow(value1, value2);
                     default:
                         return Binding.DoNothing;
                 }

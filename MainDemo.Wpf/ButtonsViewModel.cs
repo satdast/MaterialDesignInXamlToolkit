@@ -1,9 +1,9 @@
 ﻿using MaterialDesignColors.WpfExample.Domain;
 using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows.Input;
 using System.Windows.Threading;
+using MaterialDesignDemo.Domain;
 
 namespace MaterialDesignColors.WpfExample
 {
@@ -12,13 +12,14 @@ namespace MaterialDesignColors.WpfExample
         private bool _showDismissButton;
         private double _dismissButtonProgress;
         private string _demoRestartCountdownText;
+        private int _orClickMeCount;
 
         public ButtonsViewModel()
         {
             var autoStartingActionCountdownStart = DateTime.Now;
             var demoRestartCountdownComplete = DateTime.Now;
             var dismissRequested = false;
-            DismissComand = new AnotherCommandImplementation(_ => dismissRequested = true);
+            DismissCommand = new AnotherCommandImplementation(_ => dismissRequested = true);
             ShowDismissButton = true;
 
             #region DISMISS button demo control
@@ -26,9 +27,9 @@ namespace MaterialDesignColors.WpfExample
             //up the progress on the button as it would be with a progress bar.
             //and then hide the button, do whatever action you want to do
             new DispatcherTimer(
-                TimeSpan.FromMilliseconds(100), 
-                DispatcherPriority.Normal, 
-                new EventHandler((o, e) => 
+                TimeSpan.FromMilliseconds(100),
+                DispatcherPriority.Normal,
+                new EventHandler((o, e) =>
                 {
                     if (dismissRequested)
                     {
@@ -65,8 +66,11 @@ namespace MaterialDesignColors.WpfExample
                 }), Dispatcher.CurrentDispatcher);
             #endregion
 
+            IncrementOrClickMeCountCommand = new AnotherCommandImplementation(_ => OrClickMeCount += 1);
+            OrClickMeCount = 0;
+
             //just some demo code for the SAVE button
-            SaveComand = new AnotherCommandImplementation(_ =>
+            SaveCommand = new AnotherCommandImplementation(_ =>
             {
                 if (IsSaveComplete == true)
                 {
@@ -89,7 +93,7 @@ namespace MaterialDesignColors.WpfExample
                         var currentProgressPercent = 100.0 / totalDuration * currentProgress;
 
                         SaveProgress = currentProgressPercent;
-                        
+
                         if (SaveProgress >= 100)
                         {
                             IsSaveComplete = true;
@@ -104,13 +108,13 @@ namespace MaterialDesignColors.WpfExample
 
         #region Dismiss button demo
 
-        public ICommand DismissComand { get; }
+        public ICommand DismissCommand { get; }
 
         public bool ShowDismissButton
         {
             get { return _showDismissButton; }
             set { this.MutateVerbose(ref _showDismissButton, value, RaisePropertyChanged()); }
-        }        
+        }
 
         public double DismissButtonProgress
         {
@@ -134,9 +138,19 @@ namespace MaterialDesignColors.WpfExample
 
         #endregion
 
+        #region OrClickMe Demo
+        public int OrClickMeCount
+        {
+            get { return _orClickMeCount; }
+            private set { this.MutateVerbose(ref _orClickMeCount, value, RaisePropertyChanged()); }
+        }
+        public ICommand IncrementOrClickMeCountCommand { get; }
+
+        #endregion
+
         #region floating Save button demo
 
-        public ICommand SaveComand { get; }
+        public ICommand SaveCommand { get; }
 
         private bool _isSaving;
         public bool IsSaving

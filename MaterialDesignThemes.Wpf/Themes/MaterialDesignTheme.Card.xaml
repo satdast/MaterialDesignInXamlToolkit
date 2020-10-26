@@ -13,16 +13,16 @@
         <ControlTemplate.Resources>
             <converters:ShadowEdgeConverter x:Key="ShadowEdgeConverter" />
         </ControlTemplate.Resources>
-        <Grid Margin="{TemplateBinding Margin}" Background="Transparent">
-            <Grid.OpacityMask>
-                <MultiBinding Converter="{StaticResource ShadowEdgeConverter}">
-                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ActualWidth"/>
-                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ActualHeight"/>
-                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(wpf:ShadowAssist.ShadowDepth)" />
-                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(wpf:ShadowAssist.ShadowEdges)" />
-                </MultiBinding>
-            </Grid.OpacityMask>
+        <Grid Background="Transparent">
             <AdornerDecorator CacheMode="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:ShadowAssist.CacheMode)}">
+                <AdornerDecorator.OpacityMask>
+                    <MultiBinding Converter="{StaticResource ShadowEdgeConverter}">
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ActualWidth"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ActualHeight"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(wpf:ShadowAssist.ShadowDepth)" />
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(wpf:ShadowAssist.ShadowEdges)" />
+                    </MultiBinding>
+                </AdornerDecorator.OpacityMask>
                 <Border Effect="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(wpf:ShadowAssist.ShadowDepth), Converter={x:Static converters:ShadowConverter.Instance}}"
                         CornerRadius="{TemplateBinding UniformCornerRadius}">
                     <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" 
@@ -44,7 +44,6 @@
     <Style TargetType="{x:Type wpf:Card}">
         <Setter Property="Template" Value="{StaticResource CardTemplate}" />
         <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
-        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="wpf:ShadowAssist.ShadowDepth" Value="Depth2" />
         <Setter Property="Focusable" Value="False"/>
     </Style>
